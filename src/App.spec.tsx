@@ -1,6 +1,11 @@
+/* eslint-disable testing-library/prefer-query-by-disappearance */
 /* eslint-disable testing-library/no-debugging-utils */
 /* eslint-disable testing-library/prefer-screen-queries */
-import { render } from "@testing-library/react";
+import {
+  render,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
 
@@ -28,5 +33,18 @@ describe("App Component", () => {
     userEvent.click(addButton);
 
     expect(await findByText("Novo")).toBeInTheDocument();
+  });
+
+  it("should be able to remove new item from the list", async () => {
+    const { getByText, getAllByText, getByPlaceholderText } = render(<App />);
+
+    const addButton = getByText("Add to list");
+    const removeButtons = getAllByText("Remover");
+
+    userEvent.click(removeButtons[0]);
+
+    await waitForElementToBeRemoved(() => {
+      return getByText("Deigo");
+    });
   });
 });

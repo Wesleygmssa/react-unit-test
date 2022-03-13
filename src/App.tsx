@@ -10,6 +10,12 @@ const Test: React.FC = () => {
       setList([...list, newItem]);
     }, 500);
   }
+
+  function removeFromList(item: string) {
+    setTimeout(() => {
+      setList((state) => state.filter((i) => i !== item));
+    }, 500);
+  }
   return (
     <>
       <h1 className="test" data-testid="test3">
@@ -23,7 +29,10 @@ const Test: React.FC = () => {
       <button onClick={addToList}>Add to list</button>
       <ul>
         {list.map((item) => (
-          <li key={item}>{item}</li>
+          <li key={item}>
+            {item}
+            <button onClick={() => removeFromList(item)}>Remover</button>
+          </li>
         ))}
       </ul>
     </>
